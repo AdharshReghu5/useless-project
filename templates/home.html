@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Home</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li>Welcome, {{ username }}</li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="quote-container">
+        <h2>Random Demotivational Quote:</h2>
+        <blockquote>
+            <p>{{ quote }}</p>
+        </blockquote>
+    </div>
+    <div class="button-container">
+        <div class="functionality-button">
+            <a href="{{ url_for('add_alarm') }}">Add Alarm</a>
+        </div>
+        <div class="functionality-button">
+            <a href="{{ url_for('view_reminders') }}">Set Reminder</a>
+        </div>
+        <div class="functionality-button">
+            <a href="{{ url_for('some_other_functionality') }}">Other Functionality</a>
+        </div>
+        <!-- Add more functionalities as needed -->
+    </div>
+</body>
+</html>
