@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wakeup Alarm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="time"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #4cae4c;
+        }
+
+        .alarm-info {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        /* Styles for the alarm popup */
+        .popup-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid black;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Set Wakeup Alarm</h1>
+
+    <form method="POST">
+        <input type="time" id="alarm_time" name="alarm_time" required>
+        <button type="submit">Set Alarm</button>
+    </form>
+
+    {% if alarm_time %}
+        <div class="alarm-info">
+            <p><strong>Current Alarm Time:</strong> {{ alarm_time }}</p>
+        </div>
+    {% endif %}
+
+    <button onclick="window.location.href='{{ url_for('home') }}'">Back to Home</button>
+
+    <!-- Popup for alarm notification -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="alarmPopup">
+        <h2>Alarm Alert!</h2>
+        <p>Useless Alarm! Time to do nothing!</p>
+        <button onclick="stopAlarm()">Stop Alarm</button>
+    </div>
+
+    <script>
+        // Function to show the alarm popup
+        function showAlarmPopup() {
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('alarmPopup').style.display = 'block';
+        }
+
+        // Function to stop the alarm
+        function stopAlarm() {
+            fetch('/stop_alarm', {
+                method: 'POST',
+                credentials: 'include'  // Include cookies for session management
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Alarm stopped successfully.');
+                    document.getElementById('popupOverlay').style.display = 'none';
+                    document.getElementById('alarmPopup').style.display = 'none';
+                } else {
+                    console.error('Failed to stop the alarm.');
+                }
+            });
+        }
+
+        // Show the alarm popup if it's active
+        window.onload = function() {
+            {% if alarm_ringing %}
+                showAlarmPopup();
+            {% endif %}
+        };
+    </script>
+</body>
+</html>

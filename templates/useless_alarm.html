@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Useless Alarm</title>
+    <script>
+        function playSound() {
+            var audio = new Audio('/static/alarm_sound.mp3'); // Ensure you have this sound file in the static folder
+            audio.play();
+            alert("Time for the useless alarm! Just kidding!");
+        }
+
+        function checkAlarm() {
+            // You can use a polling mechanism or WebSockets for real-time updates.
+            setTimeout(playSound, 10000); // For testing, change this to your alarm time logic
+        }
+
+        window.onload = function() {
+            checkAlarm(); // Start checking when the page loads
+        };
+    </script>
+</head>
+<body>
+    <h1>Set Useless Alarm</h1>
+    <form method="post">
+        <button type="submit">Set Useless Alarm</button>
+    </form>
+</body>
+</html>

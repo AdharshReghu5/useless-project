@@ -1,0 +1,119 @@
+<!-- assignment_submission.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        button {
+            width: 80%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #fff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .countdown {
+            font-weight: bold;
+            color: #d9534f; /* Red for urgency */
+        }
+    </style>
+    <script>
+        function startCountdown(dueTime) {
+            const countdownElement = document.getElementById(dueTime);
+            const countDownDate = new Date(dueTime).getTime();
+
+            const interval = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+
+                // Time calculations for hours, minutes and seconds
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the countdown element
+                countdownElement.innerHTML = hours + "h " + minutes + "m " + seconds + "s ";
+
+                // If the countdown is over, display a message
+                if (distance < 0) {
+                    clearInterval(interval);
+                    countdownElement.innerHTML = "EXPIRED";
+                }
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <h1>Assignments</h1>
+    <form method="post">
+        <input type="text" name="assignment" placeholder="Assignment Name" required>
+        <input type="date" name="due_date" required>
+        <input type="time" name="due_time" required>
+        <button type="submit">Submit Assignment</button>
+    </form>
+    
+    <ul>
+        {% for assignment in assignments %}
+            <li>
+                <strong>{{ assignment.assignment }}</strong><br>
+                Due: {{ assignment.due_datetime }}<br>
+                Procrastination Thought: {{ assignment.procrastination_thought }}<br>
+                <div id="{{ assignment.due_datetime }}" class="countdown">Remaining Time: {{ assignment.remaining_time }}</div>
+                <script>startCountdown("{{ assignment.due_datetime }}");</script>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

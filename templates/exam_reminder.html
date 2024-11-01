@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Submission</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="datetime-local"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .exam {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 10px;
+        }
+        .countdown {
+            font-size: 18px;
+            color: #d9534f;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exam Submission</h1>
+    <form method="POST">
+        <input type="text" name="exam" placeholder="Enter your exam name" required>
+        <input type="datetime-local" name="due_datetime" required>
+        <button type="submit">Submit Exam</button>
+    </form>
+
+    {% for exam in exams %}
+        <div class="exam">
+            <p><strong>Exam:</strong> {{ exam.exam }}</p>
+            <p><strong>Due Date:</strong> {{ exam.due_datetime }}</p>
+            <p class="countdown" id="countdown-{{ loop.index }}"></p>
+            <p><strong>Procrastination Thought:</strong> {{ exam.procrastination_thought }}</p>
+        </div>
+        <script>
+            // Function to start countdown timer
+            function startCountdown(dueDate, elementId) {
+                const countDownDate = new Date(dueDate).getTime();
+                const countdownElement = document.getElementById(elementId);
+
+                const countdownInterval = setInterval(function() {
+                    const now = new Date().getTime();
+                    const distance = countDownDate - now;
+
+                    // Time calculations for days, hours, minutes, and seconds
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Display the result in the countdown element
+                    countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                    // If the countdown is over, display a message
+                    if (distance < 0) {
+                        clearInterval(countdownInterval);
+                        countdownElement.innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+            }
+
+            // Call the countdown function for each exam
+            startCountdown("{{ exam.due_datetime }}", "countdown-{{ loop.index }}");
+        </script>
+    {% endfor %}
+</body>
+</html>

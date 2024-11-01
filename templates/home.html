@@ -5,31 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Home</title>
+    <script>
+        function showAlarmPopup() {
+            document.getElementById('alarmPopup').style.display = 'block';
+        }
+
+        function stopAlarm() {
+            document.getElementById('alarmPopup').style.display = 'none';
+            // Stop the alarm sound by making a POST request to the server
+            fetch('/stop_alarm', {
+                method: 'POST',
+                credentials: 'include'  // Include cookies for session management
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Alarm stopped successfully.');
+                } else {
+                    console.error('Failed to stop the alarm.');
+                }
+            });
+        }
+
+        // Show the alarm popup if it's active
+        window.onload = function() {
+            {% if alarm_ringing %}
+                showAlarmPopup();
+            {% endif %}
+        };
+    </script>
 </head>
 <body>
     <nav>
         <ul>
-            <li>Welcome, {{ username }}</li>
+            <li class="welcome">Welcome, {{ username }}</li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
     </nav>
-    <div class="quote-container">
-        <h2>Random Demotivational Quote:</h2>
-        <blockquote>
-            <p>{{ quote }}</p>
-        </blockquote>
+
+    <!-- Background image section -->
+    <div class="background-image">
+        <div class="quote-container">
+            <blockquote>
+                <p>{{ quote }}</p>
+            </blockquote>
+        </div>
     </div>
+
+    <!-- Functionality Button Container -->
     <div class="button-container">
-        <div class="functionality-button">
-            <a href="{{ url_for('add_alarm') }}">Add Alarm</a>
+        <div class="functionality-card">
+            <a href="{{ url_for('wakeup_alarm') }}">Wakeup Alarm</a>
         </div>
-        <div class="functionality-button">
-            <a href="{{ url_for('view_reminders') }}">Set Reminder</a>
+        <div class="functionality-card">
+            <a href="{{ url_for('assignment_submission') }}">Assignment Submission</a>
         </div>
-        <div class="functionality-button">
-            <a href="{{ url_for('some_other_functionality') }}">Other Functionality</a>
+        <div class="functionality-card">
+            <a href="{{ url_for('record_submission') }}">Record Submission</a>
         </div>
-        <!-- Add more functionalities as needed -->
+        <div class="functionality-card">
+            <a href="{{ url_for('workout_reminder') }}">Workout Reminder</a>
+        </div>
+        <div class="functionality-card">
+            <a href="{{ url_for('study_timetable') }}">Study Timetable</a>
+        </div>
+        <div class="functionality-card">
+            <a href="{{ url_for('exam_reminder') }}">Exam Reminder</a>
+        </div>
+    </div>
+
+    <!-- Alarm Popup -->
+    <div id="alarmPopup" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, -50%); background-color:white; border:2px solid #ff0000; padding:20px; z-index:1000; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px;">
+        <h2 style="color: #ff0000;">Alarm Alert!</h2>
+        <p>Useless Alarm! Time to do nothing!</p>
+        <button onclick="stopAlarm()" style="background-color: #ff0000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Stop Alarm</button>
     </div>
 </body>
 </html>

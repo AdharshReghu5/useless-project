@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+nav {
+    background: #3d5a80;
+    color: #fff;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+nav ul li {
+    margin-right: 15px;
+}
+
+nav ul li.welcome {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: center;
+    flex-grow: 1;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Background image section */
+.background-image {
+    background-image: url('/static/background.jpg'); /* Update to the correct path of your image */
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Quote Styling */
+.quote-container {
+    color: #fff; /* Keeping text color white for quotes */
+    font-size: 3em; /* Large font size for quotes */
+    font-weight: bold; /* Bold font weight */
+    text-align: center;
+    max-width: 800px; /* Max width for quotes */
+    margin: 20px auto; /* Centering the quote */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Text shadow for visibility */
+}
+
+/* Functionality Button Container */
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three-column layout */
+    gap: 20px; /* Gap between buttons */
+    padding: 20px; /* Padding for button container */
+    max-width: 1200px; /* Max width for button container */
+    margin: 20px auto; /* Centering the button container */
+}
+
+.functionality-card {
+    background-color: #fff; /* Keeping background white */
+    color: #000; /* Keeping text color black */
+    padding: 30px; /* Increased padding for bigger container */
+    border-radius: 10px; /* Rounded corners */
+    text-align: center; /* Centered text */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Strong shadow around card */
+    transition: transform 0.2s ease; /* Smooth transform effect */
+}
+
+.functionality-card a {
+    color: #007bff; /* Keeping link color */
+    text-decoration: none; /* No underline on links */
+    font-size: 1.2em; /* Font size for links */
+}
+
+.functionality-card:hover {
+    transform: scale(1.05); /* Scale effect on hover */
+}
